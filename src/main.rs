@@ -1,24 +1,24 @@
-#[macro_use];
+#[macro_use]
 extern crate diesel;
 extern crate dotenv;
 extern crate serde_derive;
 
 mod db;
+mod handlers;
+
 use db::*;
 use actix_web::{ web, App, HttpResponse, HttpServer, Responder };
 
-fn index() -> impl Responder {
-    let users = get_users();
-    HttpResponse::Ok().json(users)
-}
+#[actix_rt::main]
+async fn main() -> std::io::Result<()> {
+    std::env::set_var("Rust_LOG", "actix_web=debug");
 
-fn main() {
-    HttpServer::new(|| {
+    // Start http server
+    HttpServer::new(move || {
         App::new()
-            .route("/", web::get().to(index))
+            .route("/users", web::post().to(handlers::add_user))
     })
-        .bind("127.0.0.1:8088")
-        .unwrap()
-        .run()
-        .unwrap();
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await 
 }

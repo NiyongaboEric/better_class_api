@@ -15,11 +15,11 @@ pub fn establish_connection() -> PgConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-pub fn get_users() -> Vec<User> {
-    let connection = establish_connection();
-    users
-        .filter(published.eq(true))
-        .limit(5)
-        .load::<User>(&connection)
-        .expect("Error loading posts")
-}
+// pub fn get_users() -> Vec<User> {
+//     let connection = establish_connection();
+//     users
+//         .filter(published.eq(true))
+//         .limit(5)
+//         .load::<User>(&connection)
+//         .expect("Error loading posts")
+// }
