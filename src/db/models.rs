@@ -1,17 +1,22 @@
-// use super::schema::users;
+#[macro_use]
+use diesel;
 
-// #[derive(Serialize, Queryable)]
-// pub struct User {
-//     pub id: String,
-//     pub username: String,
-//     pub email: String,
-//     pub created_at: Timestamp,
-//     pub update_at: Timestamp
-// }
+use crate::schema::*;
+use serde::{ Deserialize, Serialize };
 
-// #[derive(Insertable)]
-// #[table_name = "users"]
-// pub struct NewUser<'a> {
-//     username: &'a str,
-//     email: &'a str,
-// }
+#[derive(Debug, Serialize, Deserialize, Queryable)]
+struct User {
+    pub id: String,
+    pub username: String,
+    pub email: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub update_at: chrono::NaiveDateTime,
+}
+
+#[derive(Insertable, Debug)]
+#[table_name = "users"]
+struct NewUser<'a> {
+    pub username: &'a str,
+    pub email: &'a str,
+    pub created_at: chrono::NaiveDateTime,
+}
